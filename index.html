@@ -2,6 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cookie Consent</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
@@ -12,14 +14,10 @@ html, body{
   padding:0;
   background:transparent;
   font-family:'Prompt',sans-serif;
-}
-
-/* ซ่อน scroll bar */
-body{
   overflow:hidden;
 }
 
-/* cookie bar */
+/* COOKIE BAR */
 #cookieBox{
   position:fixed;
   bottom:0;
@@ -41,14 +39,21 @@ body{
   line-height:1.4;
 
   backdrop-filter: blur(6px);
+  animation: slideUp 0.4s ease;
 }
 
-/* ข้อความ */
+/* TEXT */
 #cookieBox span{
   flex:1;
 }
 
-/* ปุ่ม */
+/* LINK */
+#cookieBox a{
+  color:#4ade80;
+  text-decoration:none;
+}
+
+/* BUTTON */
 button{
   padding:6px 12px;
   border:none;
@@ -67,13 +72,38 @@ button{
   background:#e5e7eb;
   color:#000;
 }
+
+/* ANIMATION */
+@keyframes slideUp{
+  from{ transform:translateY(100%); }
+  to{ transform:translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width:600px){
+  #cookieBox{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  button{
+    width:100%;
+    margin-top:5px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <div id="cookieBox">
-  <span>เว็บไซต์นี้ใช้คุกกี้เพื่อพัฒนาประสบการณ์ของคุณ</span>
+  <span>
+    เว็บไซต์นี้ใช้คุกกี้เพื่อพัฒนาประสบการณ์ของคุณ 
+    <a href="https://your-site/privacy" target="_blank">
+      อ่านนโยบายความเป็นส่วนตัว
+    </a>
+  </span>
+
   <div>
     <button class="accept" onclick="acceptCookie()">ยอมรับ</button>
     <button class="decline" onclick="declineCookie()">ปฏิเสธ</button>
@@ -83,18 +113,24 @@ button{
 <script>
 function acceptCookie(){
   localStorage.setItem("cookieConsent","true");
-  document.getElementById("cookieBox").style.display="none";
+  hideBar();
 }
 
 function declineCookie(){
   localStorage.setItem("cookieConsent","false");
+  hideBar();
+}
+
+function hideBar(){
   document.getElementById("cookieBox").style.display="none";
 }
 
-/* ซ่อนถ้าเคยกดแล้ว */
-if(localStorage.getItem("cookieConsent")){
-  document.getElementById("cookieBox").style.display="none";
-}
+/* CHECK STATUS */
+window.onload = function(){
+  if(localStorage.getItem("cookieConsent")){
+    hideBar();
+  }
+};
 </script>
 
 </body>
